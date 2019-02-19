@@ -16,5 +16,5 @@ if __name__ == '__main__':
         sys.exit(main())
     except Exception as e:
         import traceback
-
+        # 为了输出更详细的错误信息
         traceback.print_exc()

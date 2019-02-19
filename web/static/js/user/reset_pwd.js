@@ -1,42 +1,41 @@
 /**
- * Created by tarena on 19-2-18.
+ * Created by tarena on 19-2-19.
  */
-var user_login_ops = {
+var user_reset_pwd_ops = {
     init:function () {
         this.eventBind();
     },
     eventBind:function () {
-        $(".login_wrap .do-login").click(function () {
+        $(".form-group #save").click(function () {
 
             var btn_target = $(this);
             if (btn_target.hasClass("disabled")){
                 common_ops.alert("正在处理!!请不要重复提交");
                 return;
             }
-
-            var login_name = $('.login_wrap input[name=login_name]').val();
-            var login_pwd = $('.login_wrap input[name=login_pwd]').val();
-            if(login_name==undefined || login_name.length < 1){
-                common_ops.alert("请输入正确的登录用户名!!");
+            var old_password = $('.form-group input[id=old_password]').val();
+            var new_password = $('.form-group input[id=new_password]').val();
+            if(old_password==undefined || old_password.length < 1){
+                common_ops.alert("请输入正确的密码");
                 return
             }
-            if(login_pwd==undefined || login_pwd.length < 1){
-                common_ops.alert("请输入正确的登录用户名!!");
+            if(new_password==undefined || new_password.length < 1){
+                common_ops.alert("请输入正确的密码");
                 return
             }
 
-            btn_target.addClass("disabled");
+            btn_target.addClass('disabled')
 
             $.ajax({
-                url:common_ops.buildUrl('/user/login'),
+                url:common_ops.buildUrl('/user/reset-pwd'),
                 type:'POST',
-                data:{'login_name':login_name, 'login_pwd':login_pwd},
+                data:{'old_password':old_password, 'new_password':new_password},
                 dataType:'json',
                 success:function (res) {
                     btn_target.removeClass("disabled");
                     if(res.code == 200){
                         callback = function(){
-                            window.location.href = common_ops.buildUrl("/");
+                            window.location.href = window.location.href;
                         }
                     }else{
                         callback = function () {
@@ -44,15 +43,12 @@ var user_login_ops = {
                         }
                     }
                     common_ops.alert(res.msg,callback)
-
                 }
-
             })
 
         })
     }
 };
-
 $(document).ready(function () {
-    user_login_ops.init();
+    user_reset_pwd_ops.init();
 });
