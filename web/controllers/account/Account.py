@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, redirect, jsonify
+from sqlalchemy import or_
+
 from common.libs.Helper import ops_render,iPagination, getCurrentData
 from common.libs.UrlManager import UrlManager
 from common.libs.user.UserService import UserService
@@ -12,9 +14,19 @@ from application import app, db
 def index():
     resp_data = {}
     req = request.values
-    page = int(req['page']) if ('page' in req and req['page'])else 1
+    page = int(req['p']) if ('p' in req and req['p'])else 1
     # 总页数
     query = User.query
+    app.logger.info(type(query))
+    if 'mix_kw' in req:
+        rule = or_(User.nickname.ilike("%{0}%".format(req['mix_kw'])))
+        query = query.filter(rule)
+        app.logger.info(type(query))
+
+    if 'status' in req and int(req['status']) > -1:
+        query = query.filter(User.status == int(req['status']))
+        app.logger.info(type(query))
+
     page_params = {
         # 总共多少页
         'total': query.count(),
@@ -24,7 +36,7 @@ def index():
         'page': page,
         # 表示想演示多少页
         'display': app.config['PAGE_DISPLAY'],
-        'url': '/account/index'
+        'url': request.full_path.replace("&p={}".format(page),"")
 
     }
     pages = iPagination(page_params)
@@ -34,6 +46,8 @@ def index():
     list = query.order_by(User.uid.desc()).all()[offset:limit]
     resp_data['list'] = list
     resp_data['pages'] = pages
+    resp_data['search_con'] = req
+    resp_data['status_mapping'] = app.config['STATUS_MAPPING']
     return ops_render( "account/index.html" , resp_data)
 
 
@@ -128,8 +142,40 @@ def set():
     return jsonify(resp)
 
 
+@route_account.route('/ops', methods=['GET', 'POST'])
+def ops():
+    resp = {'code':200, 'msg':'ok', 'data':{}}
+    req = request.values
 
+    id = req['id'] if 'id' in req else 0
+    act = req['act'] if 'act' in req else ''
 
+    if not id:
+        resp['code'] = -1
+        resp['msg'] = 'please choose'
+        return jsonify(resp)
+
+    if act not in ['remove', 'recover']:
+        resp['code'] = -1
+        resp['msg'] = '404 404 404 404'
+        return jsonify(resp)
+
+    user_info = User.query.filter_by(uid=id).first()
+
+    if not user_info:
+        resp['code'] = -1
+        resp['msg'] = 'is not user'
+        return jsonify(resp)
+
+    if act == 'remove':
+        user_info.status = 0
+
+    elif act == 'recover':
+        user_info.status = 1
+    user_info.updata_time = getCurrentData()
+    db.session.add(user_info)
+    db.session.commit()
+    return jsonify(resp)
 
 
 

@@ -33,11 +33,16 @@ def login():
             resp['code'] = -1
             resp['msg'] = '请输入正确的用户名密码 -1'
             return jsonify(resp)
-        print(user_info)
+
         # 校验密码
         if user_info.login_pwd != UserService.genePwd(login_pwd, user_info.login_salt):
             resp['code'] = -1
             resp['msg'] = '请输入正确的用户名密码 -2'
+            return jsonify(resp)
+
+        if not user_info.status:
+            resp['code'] = -1
+            resp['msg'] = 'User don not have access '
             return jsonify(resp)
 
         response = make_response(json.dumps(resp))

@@ -64,4 +64,7 @@ def check_login():
         # app.logger.debug('这是分割后对比不正却返回')
         return False
 
+    if user_info.status != 1:
+        return False
+
     return user_info
