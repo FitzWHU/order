@@ -6,6 +6,7 @@ from common.libs.Helper import ops_render,iPagination, getCurrentData
 from common.libs.UrlManager import UrlManager
 from common.libs.user.UserService import UserService
 from common.models.User import User
+from common.models.log.AppAccessLog import AppAccessLog
 route_account = Blueprint( 'account_page',__name__ )
 from application import app, db
 
@@ -55,6 +56,7 @@ def index():
 def info():
     resp_data = {}
     req = request.args
+    page = int(req['p']) if ('p' in req and req['p'])else 1
     uid = int(req.get('id', 0))
     reback_url = UrlManager.buildUrl('/account/index')
     if uid < 1:
@@ -62,7 +64,28 @@ def info():
     info = User.query.filter_by(uid=uid).first()
     if not info:
         return redirect( reback_url )
-    resp_data ['info'] = info
+    query = AppAccessLog.query.filter_by(uid=uid)
+
+    page_params = {
+        # 总共多少页
+        'total': query.count(),
+        # 一夜多少内容
+        'page_size': app.config['PAGE_SIZE'],
+        # 当前的页数
+        'page': page,
+        # 表示想演示多少页
+        'display': app.config['PAGE_DISPLAY'],
+        'url': request.full_path.replace("&p={}".format(page), "")
+
+    }
+    pages = iPagination(page_params)
+    offset = (page - 1) * app.config['PAGE_SIZE']
+    limit = app.config['PAGE_SIZE'] * page
+
+    loglist = query.all()[offset:limit]
+    resp_data['pages'] = pages
+    resp_data['info'] = info
+    resp_data['loglist'] = loglist
     return ops_render('account/info.html', resp_data)
 
 
