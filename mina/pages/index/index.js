@@ -42,6 +42,7 @@ Page({
     });
   },
   checkLogin:function(){
+    var that = this;
     wx.login({
       success: function (res) {
         if (!res.code) {
@@ -60,9 +61,11 @@ Page({
               });
               return;
             }
+            // that.goToIndex()
+
 
             app.setCache("token", res.data.data.token);
-            //that.goToIndex();
+            that.goToIndex();
           }
         });
       }
@@ -70,6 +73,7 @@ Page({
   },
 
   login:function(e){
+    var that = this;
     if(!e.detail.userInfo){
       app.alert({'content':'登录失败,再次点击'});
       return;
@@ -89,7 +93,12 @@ Page({
           method: 'POST',
           data: {code:res.code},
           success: function (res) {
-
+            if(res.data.code !=200){
+              app.alert({'content':res.data.msg});
+              return
+              
+            }
+            that.goToIndex();
           }
         })
       }
