@@ -49,6 +49,7 @@ Page({
           app.alert({ 'content': '登录失败，请再次点击~~' });
           return;
         }
+        
         wx.request({
           url: app.buildUrl('/member/check-reg'),
           header: app.getRequestHeader(),
@@ -65,7 +66,7 @@ Page({
 
 
             app.setCache("token", res.data.data.token);
-            that.goToIndex();
+            // that.goToIndex();
           }
         });
       }
@@ -91,7 +92,7 @@ Page({
           url: app.buildUrl('/member/login'),
           header: app.getRequestHeader(),
           method: 'POST',
-          data: {code:res.code},
+          data: data,
           success: function (res) {
             if(res.data.code !=200){
               app.alert({'content':res.data.msg});
