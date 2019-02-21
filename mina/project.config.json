@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -9,8 +9,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.94",
-	"appid": "wx3bb30db50151c342",
-	"projectname": "test_mina",
+	"appid": "wx641d3b62ce8853a7",
+	"projectname": "mina",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
