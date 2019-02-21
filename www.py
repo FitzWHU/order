@@ -7,7 +7,7 @@ from web.interceptors.AuthInterceptor import *
 from web.interceptors.ErrorInterceptor import *
 
 
-
+from web.controllers.api import route_api
 from web.controllers.index import route_index
 from web.controllers.user.User import route_user
 from web.controllers.static import route_static
@@ -26,3 +26,4 @@ app.register_blueprint(route_finance, url_prefix='/finance')
 app.register_blueprint(route_food, url_prefix='/food')
 app.register_blueprint(route_member, url_prefix='/member')
 app.register_blueprint(route_stat, url_prefix='/stat')
+app.register_blueprint(route_api, url_prefix='/api')

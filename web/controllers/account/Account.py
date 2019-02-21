@@ -18,15 +18,15 @@ def index():
     page = int(req['p']) if ('p' in req and req['p'])else 1
     # 总页数
     query = User.query
-    app.logger.info(type(query))
+
     if 'mix_kw' in req:
         rule = or_(User.nickname.ilike("%{0}%".format(req['mix_kw'])))
         query = query.filter(rule)
-        app.logger.info(type(query))
+
 
     if 'status' in req and int(req['status']) > -1:
         query = query.filter(User.status == int(req['status']))
-        app.logger.info(type(query))
+
 
     page_params = {
         # 总共多少页
@@ -167,9 +167,11 @@ def set():
 
 @route_account.route('/ops', methods=['GET', 'POST'])
 def ops():
-    resp = {'code':200, 'msg':'ok', 'data':{}}
+    resp = {'code': 200, 'msg': 'ok', 'data': {}}
     req = request.values
-
+    print("----------------------------")
+    print("req:", req)
+    print("----------------------------")
     id = req['id'] if 'id' in req else 0
     act = req['act'] if 'act' in req else ''
 
