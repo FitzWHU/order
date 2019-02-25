@@ -15,3 +15,9 @@ class UrlManager(object):
         ver = "%s"%(int(time.time())) if not release_version else release_version
         path =  "/static" + path + "?ver=" + ver
         return UrlManager.buildUrl( path )
+
+    @staticmethod
+    def buildImageUrl(path):
+        url = app.config['APP']['domain'] + app.config['UPLOAD']['prefix_url'] + path
+
+        return url

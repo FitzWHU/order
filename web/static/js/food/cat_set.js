@@ -32,7 +32,8 @@ var food_cat_set_ops = {
             var data = {
                 name: name,
                 weight: weight,
-                id:$(".wrap_cat_set input[name=id]").val()
+                id:$(".form-group input[name=id]").val()
+
             };
 
             $.ajax({

@@ -16,6 +16,7 @@ from web.controllers.finance.Finance import route_finance
 from web.controllers.food.Food import route_food
 from web.controllers.member.Member import route_member
 from web.controllers.stat.Stat import route_stat
+from web.controllers.upload.Upload import route_upload
 
 
 app.register_blueprint(route_index, url_prefix='/')
@@ -27,3 +28,4 @@ app.register_blueprint(route_food, url_prefix='/food')
 app.register_blueprint(route_member, url_prefix='/member')
 app.register_blueprint(route_stat, url_prefix='/stat')
 app.register_blueprint(route_api, url_prefix='/api')
+app.register_blueprint(route_upload, url_prefix='/upload')

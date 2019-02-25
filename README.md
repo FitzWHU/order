@@ -11,3 +11,4 @@
     flask-sqlacodegen 'mysql+pymysql://root:123456@127.0.0.1/food_db' --tables food_cat --outfile "common/models/food/FoodCat.py"  --flask
     flask-sqlacodegen 'mysql+pymysql://root:123456@127.0.0.1/food_db' --tables food_sale_change_log --outfile "common/models/food/FoodSaleChangeLog.py"  --flask
     flask-sqlacodegen 'mysql+pymysql://root:123456@127.0.0.1/food_db' --tables food_stock_change_log --outfile "common/models/food/FoodStockChangeLog.py"  --flask
+    flask-sqlacodegen 'mysql+pymysql://root:123456@127.0.0.1/food_db' --tables images --outfile "common/models/image.py"  --flask

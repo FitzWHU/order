@@ -169,9 +169,6 @@ def set():
 def ops():
     resp = {'code': 200, 'msg': 'ok', 'data': {}}
     req = request.values
-    print("----------------------------")
-    print("req:", req)
-    print("----------------------------")
     id = req['id'] if 'id' in req else 0
     act = req['act'] if 'act' in req else ''
 
