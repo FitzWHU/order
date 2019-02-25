@@ -26,3 +26,4 @@ fun template
 from common.libs.UrlManager import UrlManager
 app.add_template_global(UrlManager.buildStaticUrl, 'buildStaticUrl')
 app.add_template_global(UrlManager.buildUrl, 'buildUrl')
+app.add_template_global(UrlManager.buildImageUrl, 'buildImageUrl')

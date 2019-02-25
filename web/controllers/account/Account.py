@@ -143,7 +143,6 @@ def set():
         resp['msg'] = '换一个登录名去'
         return jsonify(resp)
 
-
     user_info = User.query.filter_by(uid= id).first()
     if user_info:
         model_user = user_info
