@@ -7,13 +7,19 @@ AUTH_COOKIE_NAME = 'mooc_food'
 # 过滤url
 IGNORE_URLS = [
     '^/user/login',
-    '^/api'
+
 ]
 
 IGNORE_CHECK_LOGIN_URLS = [
     "^/static",
     '^/favicon.ico'
 ]
+
+# 过滤url
+API_IGNORE_URLS = [
+    '^/api'
+]
+
 
 PAGE_SIZE = 10
 PAGE_DISPLAY = 10

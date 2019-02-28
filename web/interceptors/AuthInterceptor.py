@@ -18,6 +18,10 @@ def before_request():
     if pattern.match(path):
         # app.logger.info('这是静态文件和图标过滤' + path)
         return
+
+
+    if '/api' in path:
+        return
     # 判断是否已经登录
     user_info = check_login()
 

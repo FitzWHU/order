@@ -1,9 +1,10 @@
 from werkzeug.utils import secure_filename
-from application import app,db
+from application import app, db
 from common.libs.Helper import getCurrentData
 import datetime
 import os, stat, uuid
 from common.models.Image import Image
+
 
 class UploadService():
     @staticmethod
@@ -26,11 +27,7 @@ class UploadService():
             os.chmod(save_dir, stat.S_IRWXU | stat.S_IRGRP | stat.S_IRWXO)
         # uuid生成不重复的字符串
         file_name = str(uuid.uuid4()).replace("-", "") + "." + ext
-        print('-----------------')
-        print('开始存储文件')
-        print("路径", "{0}/{1}".format(save_dir, file_name))
         file.save("{0}/{1}".format(save_dir, file_name))
-        print('-----------------')
 
         model_image = Image()
         model_image.file_key = file_dir + "/" + file_name
@@ -43,23 +40,3 @@ class UploadService():
 
         }
         return resp
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

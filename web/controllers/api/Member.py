@@ -1,13 +1,14 @@
 import json
 
 from web.controllers.api import route_api
-from flask import request, jsonify
+from flask import request, jsonify, g
 from application import app, db
 import requests
 from common.models.member.Member import Member
 from common.models.member.Oauth_Member_Bind import OauthMemberBind
 from common.libs.Helper import getCurrentData
-from common.libs.member.MemberService import  MemberService
+from common.libs.member.MemberService import MemberService
+from common.models.food.WxShareHistory import WxShareHistory
 
 
 @route_api.route('/member/login', methods=['GET', "POST"])
@@ -29,9 +30,6 @@ def login():
     nickname = req['nickName'] if 'nickName' in req else ''
     sex = req['gender'] if 'gender' in req else 0
     avatar = req['avatarUrl'] if 'avatarUrl' in req else ''
-    print("--------------------------------")
-    print(req)
-    print("--------------------------------")
     '''
         判断是否已经注册了
     '''
@@ -93,25 +91,28 @@ def checkReg():
     return jsonify(resp)
 
 
+@route_api.route("/member/share", methods=["POST"])
+def memberShare():
+    resp = {'code': 200, 'msg': '操作成功~', 'data': {}}
+    req = request.values
+    url = req['url'] if 'url' in req else ''
+    member_info = g.member_info
+    model_share = WxShareHistory()
+    if member_info:
+        model_share.member_id = member_info.id
+    model_share.share_url = url
+    model_share.created_time = getCurrentData()
+    db.session.add(model_share)
+    db.session.commit()
+    return jsonify(resp)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@route_api.route("/member/info")
+def memberInfo():
+    resp = {'code': 200, 'msg': '操作成功~', 'data': {}}
+    member_info = g.member_info
+    resp['data']['info'] = {
+        "nickname": member_info.nickname,
+        "avatar_url": member_info.avatar
+    }
+    return jsonify(resp)
