@@ -5,12 +5,13 @@
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.94",
 	"appid": "wx641d3b62ce8853a7",
-	"projectname": "mina",
+	"projectname": "miniprogram-test-1",
 	"isGameTourist": false,
 	"condition": {
 		"search": {

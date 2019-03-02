@@ -54,10 +54,12 @@ App({
     },
     getRequestHeader:function(){
         return {
-            'content-type': 'application/x-www-form-urlencoded'
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': this.getCache( "token" )
+
         }
     },
-    buildUrl:function(path, params){
+    buildUrl:function(path,params){
       var url = this.globalData.domain + path;
       var _paramUrl = "";
       if (params) {
@@ -68,18 +70,18 @@ App({
       }
       return url + _paramUrl;
     },
-    getCache:function(key){
-      try{
-        var value = wx.getStorageInfoSync("key")
-      }catch(e){
-
-      }
-      return value;
+    getCache:function( key ){
+        var value = undefined;
+        try {
+            value = wx.getStorageSync( key );
+        } catch (e) {
+        }
+        return value;
     },
-    setCache:function(key, value){
-      wx.setStorage({
-        key: key,
-        data: value,
-      })
+    setCache:function(key,value){
+        wx.setStorage({
+             key:key,
+            data:value
+        });
     }
 });

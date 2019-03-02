@@ -16,7 +16,8 @@
         <view class="confirm-btn" bindtap='goToIndex' wx:if="{{regFlag==true}}">
           <text >走吧，订餐去</text>
         </view>
-        <button class="confirm-btn" open-type='getUserInfo' bindgetuserinfo='login'wx:if="{{regFlag==false}}">授权登陆</button>
+        <button class="confirm-btn" open-type="getUserInfo"bindgetuserinfo="login" wx:if="{{regFlag==false}}">授权登陆</button>
+
         <text class="copyright">@编程浪子 54php.cn</text>
       </view>
     </view>
