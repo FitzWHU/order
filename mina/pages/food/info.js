@@ -98,8 +98,19 @@ Page({
 
     },
     buyNow: function () {
+      var that =this
+      var data = {
+        goods:[{
+          'id': this.data.info.id,
+          'price': this.data.info.price,
+          'number':this.data.info.buynumber,
+        }]
+      };
+      that.setData({
+        hideShopPopup: true
+      });
         wx.navigateTo({
-            url: "/pages/order/index"
+            url: "/pages/order/index?data="+ JSON.stringify(data)
         });
     },
     /**

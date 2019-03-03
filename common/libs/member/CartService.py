@@ -33,3 +33,12 @@ class CartService():
         db.session.commit()
         return True
 
+    @staticmethod
+    def deleteItem(member_id = 0, items=None):
+        if member_id <1 or not items:
+            return False
+
+        for item in items:
+            MemberCart.query.filter_by(food_id=item['id'], member_id=member_id).delete()
+        db.session.commit()
+        return True
