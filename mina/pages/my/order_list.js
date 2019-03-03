@@ -48,6 +48,7 @@ Page({
                 }
             ]
         });
+        this.getPayOrder()
     },
     onHide: function () {
         // 生命周期函数--监听页面隐藏
@@ -64,5 +65,26 @@ Page({
     onReachBottom: function () {
         // 页面上拉触底事件的处理函数
 
+    },
+    getPayOrder:function(){
+      var that = this;
+      wx.request({
+        url: app.buildUrl("/my/order"),
+        header:app.getRequestHeader(),
+        data:{
+          status:that.data.status[that.data.currentType]
+        },
+        success:function(res){
+          var resp = res.data;
+          if (resp.code!=200){
+            app.alert({'content': resp.msg})
+            return;
+          }
+          that.setData({
+            order_list: resp.data.pay_order_list
+          })
+
+        }
+      })
     }
 })

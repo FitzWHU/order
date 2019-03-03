@@ -31,8 +31,8 @@ def cartIndex():
                 "id": item.id,
                 "food_id": item.food_id,
                 "pic_url": UrlManager.buildImageUrl(tem_food_info.main_image),
-                "name": "小鸡炖蘑菇-1",
-                "price": "85.00",
+                "name":tem_food_info.name,
+                "price":str( tem_food_info.price ),
                 "active": True,
                 "number": item.quantity
             }

@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
-from application import app,db
+from application import app, db
 from common.models.food.FoodStockChangeLog import FoodStockChangeLog
 from common.models.food.Food import Food
 from common.libs.Helper import getCurrentData
-class FoodService():
 
+
+class FoodService():
     @staticmethod
-    def setStockChangeLog( food_id = 0,quantity = 0,note = '' ):
+    def setStockChangeLog(food_id=0, quantity=0, note=''):
 
         if food_id < 1:
             return False
 
-        food_info = Food.query.filter_by( id = food_id ).first()
+        food_info = Food.query.filter_by(id=food_id).first()
         if not food_info:
             return False
 
@@ -24,5 +25,3 @@ class FoodService():
         db.session.add(model_stock_change)
         db.session.commit()
         return True
-
-

@@ -85,7 +85,9 @@ def getDictFilterField(db_model,select_field,key_field,id_list):
         ret[getattr(item, key_field)] = item
     return ret
 
-
+'''
+    查询所有obj列表中的对象的字段
+'''
 def selectFilterObj(obj, field):
     ret = []
     for item in obj:

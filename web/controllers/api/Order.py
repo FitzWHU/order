@@ -1,10 +1,11 @@
 import json, decimal
 
 from common.libs.UrlManager import UrlManager
+from common.libs.member.CartService import CartService
 from common.models.food.Food import Food
 from web.controllers.api import route_api
 from flask import jsonify, request, g
-
+from common.libs.pay.PayService import PayService
 
 @route_api.route("/order/info", methods=['GET', "POST"])
 def orderInfo():
@@ -44,4 +45,31 @@ def orderInfo():
     resp['data']['yun_price'] = str(yun_price)
     resp['data']['total_price'] = str(pay_price + yun_price)
     resp['data']['default_address'] = default_address
+    return jsonify(resp)
+
+
+@route_api.route("/order/create", methods=['GET', "POST"])
+def orderCreate():
+    resp = {"code": 200, "msg": "操作成功", "data": {}}
+    req = request.values
+
+    type = req.get('type', '')
+    params_goods = req.get('goods', None)
+    # 解析数据
+    items = []
+    if params_goods:
+        items = json.loads(params_goods)
+
+    if len(items)<1:
+        resp['code'] = -1
+        resp['msg'] = '下单失败, 无商品'
+        return jsonify(resp)
+
+    member_info = g.member_info
+    target = PayService()
+    params = {}
+    resp = target.createOrder(member_info.id, items, params)
+    if resp['code'] == 200 and type =='cart':
+        # 删购物车
+        CartService.deleteItem(member_info.id, items)
     return jsonify(resp)
