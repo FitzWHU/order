@@ -3,6 +3,8 @@ import json, decimal
 from common.libs.UrlManager import UrlManager
 from common.libs.member.CartService import CartService
 from common.models.food.Food import Food
+from common.models.member.Oauth_Member_Bind import OauthMemberBind
+from common.models.pay.PayOrder import PayOrder
 from web.controllers.api import route_api
 from flask import jsonify, request, g
 from common.libs.pay.PayService import PayService
@@ -73,3 +75,44 @@ def orderCreate():
         # 删购物车
         CartService.deleteItem(member_info.id, items)
     return jsonify(resp)
+
+
+@route_api.route("/order/pay", methods=["POST"])
+def orderPay():
+    resp = {"code": 200, "msg": "操作成功", "data": {}}
+    member_info = g.member_info
+    req = request.values
+    order_sn = req.get("order_sn", '')
+    pay_order_info = PayOrder.query.filter_by(order_sn == order_sn).first()
+    if not pay_order_info:
+        resp['code'] = -1
+        resp['msg'] = '系统繁忙'
+        return jsonify(resp)
+    oauth_bind_info = OauthMemberBind.query.filter_by(member_id = member_info.id).first()
+    if not oauth_bind_info:
+        resp['code'] = -1
+        resp['msg'] = "系统繁忙, 请稍后再试"
+        return jsonify(resp)
+    return jsonify(resp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

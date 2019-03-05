@@ -25,6 +25,7 @@ def login():
     if openid is None:
         resp['code'] = -1
         resp['msg'] = '调用微信出错'
+        print("1111111111111111111")
         return jsonify(resp)
 
     nickname = req['nickName'] if 'nickName' in req else ''
